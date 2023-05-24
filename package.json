@@ -1,0 +1,23 @@
+{
+  "name": "web3.storage.rpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "rpc-gen": "npx pbjs --es5 src/gen/messages.js src/protos/messages.proto",
+    "generate-protobufs": "node ./src/scripts/generate-protobufs.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "json-rpc2": "^2.0.0",
+    "jsonrpc-lite": "^2.2.0"
+  },
+  "devDependencies": {
+    "protobufjs": "^7.2.3"
+  }
+}
