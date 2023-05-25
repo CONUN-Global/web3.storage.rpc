@@ -5,14 +5,15 @@
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node .",
-    "rpc-gen": "npx pbjs --es5 src/gen/messages.js src/protos/messages.proto",
-    "generate-protobufs": "node ./src/scripts/generate-protobufs.js"
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@conun-global/web3.storage": "^1.3.4",
+    "@grpc/grpc-js": "^1.8.14",
+    "@grpc/proto-loader": "^0.7.7",
     "express": "^4.18.2",
     "json-rpc2": "^2.0.0",
     "jsonrpc-lite": "^2.2.0"

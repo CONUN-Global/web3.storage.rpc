@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+message Options {
+    repeated string parent_node = 1;
+    string swarm_key = 2;
+    repeated string listen = 3;
+    string api = 4;
+    string gateway = 5;
+    string rpc =  6;
+    optional string storage_dir = 7;
+}
+
+service Web3StorageService {
+    rpc GetPeerId (Empty) returns (PeerId) {}
+    rpc ExecuteWeb3Storage (Options) returns (Empty) {}
+}
+
+message PeerId {
+    string value = 1;
+}
+
+message Empty {}
