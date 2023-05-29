@@ -1,3 +1,3 @@
-const { startGRPCServer } = require("./services");
+import { startGRPCServer } from "./services/index.js";
 
-startGRPCServer();
+startGRPCServer;

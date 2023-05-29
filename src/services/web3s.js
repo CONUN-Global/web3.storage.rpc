@@ -1,4 +1,6 @@
-async function executeWeb3Storage(_options, callback) {
+import { executeWeb3Storage, getPeerID } from "../web3/index.js";
+
+async function execWeb3Storage(_options, callback) {
   try {
     await executeWeb3Storage(_options);
     callback(null, { payload: { success: true, msg: null } });
@@ -7,10 +9,11 @@ async function executeWeb3Storage(_options, callback) {
   }
 }
 
-async function getPeerID(_, callback) {
+async function getPeerId(_, callback) {
   try {
+    console.log("peerID");
     const peerID = await getPeerID();
-
+    console.log(peerID);
     callback(null, {
       payload: { success: true, msg: null, data: peerID }
     });
@@ -19,9 +22,7 @@ async function getPeerID(_, callback) {
   }
 }
 
-const Web3StorageServices = {
-  executeWeb3Storage,
-  getPeerID
+export const Web3StorageServices = {
+  execWeb3Storage,
+  getPeerId
 };
-
-module.exports = Web3StorageServices;

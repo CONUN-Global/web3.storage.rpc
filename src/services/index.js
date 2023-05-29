@@ -1,9 +1,10 @@
-const grpc = require("@grpc/grpc-js");
-const path = require("path");
-const Web3StorageServices = require("./web3s");
-const protoLoader = require("@grpc/proto-loader");
+import grpc from "@grpc/grpc-js";
+import path from "path";
 
-const { initiateWeb3Storage } = require("../web3");
+import protoLoader from "@grpc/proto-loader";
+
+import { initiateWeb3Storage } from "../web3/index.js";
+import { Web3StorageServices } from "./web3s.js";
 
 const server = new grpc.Server();
 
@@ -29,7 +30,7 @@ server.addService(
   Web3StorageServices
 );
 
-function startGRPCServer() {
+export function startGRPCServer() {
   server.bindAsync(
     "127.0.0.1:50051",
     grpc.ServerCredentials.createInsecure(),
@@ -40,7 +41,3 @@ function startGRPCServer() {
     }
   );
 }
-
-module.exports = {
-  startGRPCServer
-};
