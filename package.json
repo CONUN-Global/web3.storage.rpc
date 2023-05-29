@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node ."
+    "start": "node ./src/main.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,8 @@
     "@grpc/proto-loader": "^0.7.7",
     "express": "^4.18.2",
     "json-rpc2": "^2.0.0",
-    "jsonrpc-lite": "^2.2.0"
+    "jsonrpc-lite": "^2.2.0",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "protobufjs": "^7.2.3"
