@@ -72,7 +72,7 @@ export async function stopWeb3Storage() {
 }
 
 export function getPeerID() {
-  return peerID;
+  return { peerID };
 }
 
 export function getStorage() {

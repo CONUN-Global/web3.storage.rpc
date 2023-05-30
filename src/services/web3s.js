@@ -25,12 +25,10 @@ function getPeerId(_, callback) {
             console.log("peerID");
             const peerID = yield getPeerID();
             console.log(peerID);
-            callback(null, {
-                payload: { success: true, msg: null, data: peerID }
-            });
+            callback(null, peerID);
         }
         catch (err) {
-            callback(null, { payload: { success: false, msg: err, data: null } });
+            callback(null, { peerID: null });
         }
     });
 }

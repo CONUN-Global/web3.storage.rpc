@@ -11,12 +11,12 @@ message Options {
 }
 
 service Web3StorageService {
-    rpc GetPeerId (Empty) returns (PeerId) {}
+    rpc getPeerID (Empty) returns (PeerId) {}
     rpc ExecuteWeb3Storage (Options) returns (Empty) {}
 }
 
 message PeerId {
-    string value = 1;
+    string peerID = 1;
 }
 
 message Empty {}

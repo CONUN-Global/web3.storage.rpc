@@ -12,14 +12,11 @@ async function execWeb3Storage(_options: any, callback: any) {
 
 async function getPeerId(_: any, callback: any) {
   try {
-    console.log("peerID");
     const peerID = await getPeerID();
-    console.log(peerID);
-    callback(null, {
-      payload: { success: true, msg: null, data: peerID }
-    });
+
+    callback(null, peerID);
   } catch (err) {
-    callback(null, { payload: { success: false, msg: err, data: null } });
+    callback(null, { peerID: null });
   }
 }
 
