@@ -12,9 +12,7 @@ let storage, node, pNode, content, linkedDag, swarm, peerID;
 export function initiateWeb3Storage() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // const Web3Storage = await import("@conun-global/web3.storage");
             peerID = yield (yield Web3Storage.getPeerId()).toString();
-            console.log(peerID);
         }
         catch (err) {
             console.log("Storage initiate error " + err, "error");
@@ -35,12 +33,11 @@ export function executeWeb3Storage(options) {
                 RPC: options.rpc,
                 storageDir: options.storage_dir
             };
-            // const Web3Storage = await import("@conun-global/web3.storage");
             storage = new Web3Storage.InitStorage(_options);
             yield (storage === null || storage === void 0 ? void 0 : storage.start());
-            peerID = yield (yield Web3Storage.getPeerId()).toString();
             node = yield storage.getResolveStorage();
             pNode = yield storage.getResolveP2P();
+            peerID = pNode.peerId.toString();
             content = new Web3Storage.Content(node);
             linkedDag = new Web3Storage.LinkedDag(node);
             // swarm = await node.swarm.connect(swarmNode);
@@ -53,7 +50,7 @@ export function executeWeb3Storage(options) {
 export function stopWeb3Storage() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const storageCopy = getStorage();
+            const storageCopy = getStorage().storage;
             if (!storageCopy)
                 return;
             yield (storageCopy === null || storageCopy === void 0 ? void 0 : storageCopy.stop());
@@ -74,17 +71,17 @@ export function getPeerID() {
     return { peerID };
 }
 export function getStorage() {
-    return storage;
+    return { storage };
 }
 export function getNode() {
-    return node;
+    return { node };
 }
 export function getContent() {
-    return content;
+    return { content };
 }
 export function getPNode() {
-    return pNode;
+    return { pNode };
 }
 export function getLinkedDag() {
-    return linkedDag;
+    return { linkedDag };
 }

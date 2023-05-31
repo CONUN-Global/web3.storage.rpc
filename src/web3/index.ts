@@ -10,11 +10,7 @@ let storage: any,
 
 export async function initiateWeb3Storage() {
   try {
-    // const Web3Storage = await import("@conun-global/web3.storage");
-
     peerID = await (await Web3Storage.getPeerId()).toString();
-
-    console.log(peerID);
   } catch (err) {
     console.log("Storage initiate error " + err, "error");
   }
@@ -34,17 +30,16 @@ export async function executeWeb3Storage(options: any) {
       storageDir: options.storage_dir
     };
 
-    // const Web3Storage = await import("@conun-global/web3.storage");
-
     storage = new Web3Storage.InitStorage(_options);
 
     await storage?.start();
 
-    peerID = await (await Web3Storage.getPeerId()).toString();
     node = await storage.getResolveStorage();
     pNode = await storage.getResolveP2P();
+    peerID = pNode.peerId.toString();
     content = new Web3Storage.Content(node);
     linkedDag = new Web3Storage.LinkedDag(node);
+
     // swarm = await node.swarm.connect(swarmNode);
   } catch (err) {
     console.log("Storage execute error " + err, "error");
@@ -53,7 +48,7 @@ export async function executeWeb3Storage(options: any) {
 
 export async function stopWeb3Storage() {
   try {
-    const storageCopy = getStorage();
+    const storageCopy = getStorage().storage;
 
     if (!storageCopy) return;
 
@@ -76,21 +71,21 @@ export function getPeerID() {
 }
 
 export function getStorage() {
-  return storage;
+  return { storage };
 }
 
 export function getNode() {
-  return node;
+  return { node };
 }
 
 export function getContent() {
-  return content;
+  return { content };
 }
 
 export function getPNode() {
-  return pNode;
+  return { pNode };
 }
 
 export function getLinkedDag() {
-  return linkedDag;
+  return { linkedDag };
 }

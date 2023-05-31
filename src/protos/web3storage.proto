@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/any.proto";
+
 message Options {
     repeated string parent_node = 1;
     string swarm_key = 2;
@@ -11,12 +13,33 @@ message Options {
 }
 
 service Web3StorageService {
+    rpc getStorage (Empty) returns (Storage) {}
+    rpc getNode (Empty) returns (Node) {}
+    rpc getContent (Empty) returns (Content) {}
+    rpc getLinkedDag (Empty) returns (LinkedDag) {}
     rpc getPeerID (Empty) returns (PeerId) {}
     rpc ExecuteWeb3Storage (Options) returns (Empty) {}
 }
 
 message PeerId {
     string peerID = 1;
+}
+
+message Storage {
+    google.protobuf.Any storage = 1;
+}
+
+message Content {
+    google.protobuf.Any content = 1;
+}
+
+message Node {
+    google.protobuf.Any node = 1;
+}
+
+
+message LinkedDag {
+    google.protobuf.Any linkedDag = 1;
 }
 
 message Empty {}
