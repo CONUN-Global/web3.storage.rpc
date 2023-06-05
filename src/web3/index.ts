@@ -1,4 +1,6 @@
 import * as Web3Storage from "@conun-global/web3.storage";
+import { concat } from "uint8arrays";
+import all from "it-all";
 
 let storage: any,
   node: any,
@@ -53,14 +55,6 @@ export async function stopWeb3Storage() {
     if (!storageCopy) return;
 
     await storageCopy?.stop();
-
-    node = null;
-    pNode = null;
-    content = null;
-    linkedDag = null;
-    swarm = null;
-    peerID = null;
-    storage = null;
   } catch (err) {
     console.log("Storage stop error " + err, "error");
   }
@@ -74,18 +68,62 @@ export function getStorage() {
   return { storage };
 }
 
-export function getNode() {
-  return { node };
+export async function getNode(_options: any) {
+  const storage = new Web3Storage.InitStorage(_options);
+
+  const node = await storage.getResolveStorage();
+
+  return node;
 }
 
-export function getContent() {
+export async function getContent(_options: any) {
+  const node = await getNode(_options);
+  const content = new Web3Storage.Content(node);
+
   return { content };
 }
 
-export function getPNode() {
-  return { pNode };
+export async function getLinkedDag(_options: any) {
+  const node = await getNode(_options);
+  const linkedDag = new Web3Storage.LinkedDag(node);
+
+  return linkedDag;
 }
 
-export function getLinkedDag() {
-  return { linkedDag };
+export async function uploadFileNode(path: string, options: any) {
+  const _content = await getContent(options);
+  const content = _content.content;
+
+  const data = await content?.addFile(path);
+
+  return data;
 }
+
+export async function lsDir(cid: any, options: any) {
+  const _content = await getContent(options);
+  const content = _content.content;
+
+  const res = await content.lsDir(cid);
+
+  const mutatedRes = res.map((file) => ({
+    ...file,
+    cid: file.cid?.toString()
+  }));
+
+  return mutatedRes;
+}
+
+export async function publishFile(obj: any, options: any) {
+  const linkedDag = await getLinkedDag(options);
+
+  const res = await linkedDag.add(obj);
+
+  return res?.toString();
+}
+
+// export async function getFilePreview(cid: any, options: any) {
+//   // const node = await getNode(options);
+//   // const preview = concat(all(node?.cat(cid)));
+//   // console.log(preview);
+//   // return preview;
+// }

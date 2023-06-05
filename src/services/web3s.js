@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { executeWeb3Storage, getContent, getLinkedDag, getNode, getPeerID, getStorage } from "../web3/index.js";
+import { executeWeb3Storage, getContent, getPeerID, getStorage, lsDir, publishFile, uploadFileNode } from "../web3/index.js";
 function execWeb3Storage(_options, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -30,21 +30,11 @@ function getPeerId(_, callback) {
         }
     });
 }
-function getNodeRPC(_, callback) {
+function getContentRPC(_options, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const node = yield getNode();
-            callback(null, node);
-        }
-        catch (err) {
-            callback(null, { node: null });
-        }
-    });
-}
-function getContentRPC(_, callback) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const content = yield getContent();
+            const content = yield getContent(_options);
+            console.log(content);
             callback(null, content);
         }
         catch (err) {
@@ -55,7 +45,7 @@ function getContentRPC(_, callback) {
 function getLinkedDagRPC(_, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const linkedDag = yield getLinkedDag();
+            const linkedDag = null;
             callback(null, linkedDag);
         }
         catch (err) {
@@ -70,15 +60,69 @@ function getStorageRPC(_, callback) {
             callback(null, storage);
         }
         catch (err) {
-            callback(null, { storage: null });
+            callback(err, { storage: null });
+        }
+    });
+}
+function uploadFile(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = req.request;
+        try {
+            const res = yield uploadFileNode(data.path, data.options);
+            const stringified = JSON.stringify(res);
+            callback(null, { data: stringified });
+        }
+        catch (err) {
+            callback(err, null);
+        }
+    });
+}
+function uploadThumbnail(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = req.request;
+        try {
+            const res = yield uploadFileNode(data.path, data.options);
+            const stringified = JSON.stringify(res);
+            callback(null, { data: stringified });
+        }
+        catch (err) {
+            callback(err, null);
+        }
+    });
+}
+function lsDirRPC(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = req.request;
+        try {
+            const res = yield lsDir(data.cid, data.options);
+            const stringified = JSON.stringify(res);
+            callback(null, { data: stringified });
+        }
+        catch (err) {
+            callback(err, null);
+        }
+    });
+}
+function publishFileRPC(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = req.request;
+        try {
+            const res = yield publishFile(JSON.parse(data.obj), data.options);
+            callback(null, { data: res });
+        }
+        catch (err) {
+            callback(err, null);
         }
     });
 }
 export const Web3StorageServices = {
     executeWeb3Storage: execWeb3Storage,
-    getPeerId,
-    getNode: getNodeRPC,
     getStorage: getStorageRPC,
     getContent: getContentRPC,
-    getLinkedDag: getLinkedDagRPC
+    getLinkedDag: getLinkedDagRPC,
+    publishFile: publishFileRPC,
+    lsDir: lsDirRPC,
+    uploadFile,
+    getPeerId,
+    uploadThumbnail
 };

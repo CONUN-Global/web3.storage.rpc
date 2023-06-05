@@ -54,13 +54,6 @@ export function stopWeb3Storage() {
             if (!storageCopy)
                 return;
             yield (storageCopy === null || storageCopy === void 0 ? void 0 : storageCopy.stop());
-            node = null;
-            pNode = null;
-            content = null;
-            linkedDag = null;
-            swarm = null;
-            peerID = null;
-            storage = null;
         }
         catch (err) {
             console.log("Storage stop error " + err, "error");
@@ -73,15 +66,57 @@ export function getPeerID() {
 export function getStorage() {
     return { storage };
 }
-export function getNode() {
-    return { node };
+export function getNode(_options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const storage = new Web3Storage.InitStorage(_options);
+        const node = yield storage.getResolveStorage();
+        return node;
+    });
 }
-export function getContent() {
-    return { content };
+export function getContent(_options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const node = yield getNode(_options);
+        const content = new Web3Storage.Content(node);
+        return { content };
+    });
 }
-export function getPNode() {
-    return { pNode };
+export function getLinkedDag(_options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const node = yield getNode(_options);
+        const linkedDag = new Web3Storage.LinkedDag(node);
+        return linkedDag;
+    });
 }
-export function getLinkedDag() {
-    return { linkedDag };
+export function uploadFileNode(path, options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _content = yield getContent(options);
+        const content = _content.content;
+        const data = yield (content === null || content === void 0 ? void 0 : content.addFile(path));
+        return data;
+    });
 }
+export function lsDir(cid, options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _content = yield getContent(options);
+        const content = _content.content;
+        const res = yield content.lsDir(cid);
+        const mutatedRes = res.map((file) => {
+            var _a;
+            return (Object.assign(Object.assign({}, file), { cid: (_a = file.cid) === null || _a === void 0 ? void 0 : _a.toString() }));
+        });
+        return mutatedRes;
+    });
+}
+export function publishFile(obj, options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const linkedDag = yield getLinkedDag(options);
+        const res = yield linkedDag.add(obj);
+        return res === null || res === void 0 ? void 0 : res.toString();
+    });
+}
+// export async function getFilePreview(cid: any, options: any) {
+//   // const node = await getNode(options);
+//   // const preview = concat(all(node?.cat(cid)));
+//   // console.log(preview);
+//   // return preview;
+// }

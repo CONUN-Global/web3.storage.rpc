@@ -1,0 +1,17 @@
+Web3storage methods
+
+1) getFile
+request {
+
+}
+response {
+
+}
+2) getFiles
+3) getFilePreview
+4) addFile
+5) uploadFile
+6) uploadThumbnail
+7) lsDir
+8) downloadFile
+9) publishFile
