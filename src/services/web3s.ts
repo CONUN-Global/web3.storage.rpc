@@ -1,6 +1,8 @@
 import {
+  downloadFile,
   executeWeb3Storage,
   getContent,
+  getFilePreview,
   getLinkedDag,
   getNode,
   getPeerID,
@@ -111,6 +113,24 @@ async function publishFileRPC(req: any, callback: any) {
   }
 }
 
+async function getFilePreviewRPC(req: any, callback: any) {
+  const data = req.request;
+
+  try {
+    const res = await getFilePreview(data.cid, data.options);
+
+    callback(null, { data: res });
+  } catch (err) {
+    callback(err, null);
+  }
+}
+
+async function downloadFileRPC(req: any, callback: any) {
+  try {
+    await downloadFile(req, callback);
+  } catch (err) {}
+}
+
 export const Web3StorageServices: grpc.UntypedServiceImplementation = {
   executeWeb3Storage: execWeb3Storage,
   getStorage: getStorageRPC,
@@ -120,5 +140,7 @@ export const Web3StorageServices: grpc.UntypedServiceImplementation = {
   lsDir: lsDirRPC,
   uploadFile,
   getPeerId,
-  uploadThumbnail
+  uploadThumbnail,
+  getFilePreview: getFilePreviewRPC,
+  downloadFile: downloadFileRPC
 };

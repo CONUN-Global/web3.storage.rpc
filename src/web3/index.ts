@@ -1,14 +1,9 @@
 import * as Web3Storage from "@conun-global/web3.storage";
 import { concat } from "uint8arrays";
 import all from "it-all";
+import fs from "fs";
 
-let storage: any,
-  node: any,
-  pNode: any,
-  content: any,
-  linkedDag: any,
-  swarm: any,
-  peerID: any;
+let storage: any, peerID: any;
 
 export async function initiateWeb3Storage() {
   try {
@@ -35,14 +30,6 @@ export async function executeWeb3Storage(options: any) {
     storage = new Web3Storage.InitStorage(_options);
 
     await storage?.start();
-
-    node = await storage.getResolveStorage();
-    pNode = await storage.getResolveP2P();
-    peerID = pNode.peerId.toString();
-    content = new Web3Storage.Content(node);
-    linkedDag = new Web3Storage.LinkedDag(node);
-
-    // swarm = await node.swarm.connect(swarmNode);
   } catch (err) {
     console.log("Storage execute error " + err, "error");
   }
@@ -121,9 +108,39 @@ export async function publishFile(obj: any, options: any) {
   return res?.toString();
 }
 
-// export async function getFilePreview(cid: any, options: any) {
-//   // const node = await getNode(options);
-//   // const preview = concat(all(node?.cat(cid)));
-//   // console.log(preview);
-//   // return preview;
-// }
+export async function getFilePreview(cid: any, options: any) {
+  const node = await getNode(options);
+
+  // @ts-ignore
+  const preview = concat(await all(node?.cat(cid)));
+
+  return preview;
+}
+
+export async function downloadFile(call: any, callback: any) {
+  const { downloadDir, cid, name, size, options } = call.request;
+
+  const node = await getNode(options);
+
+  // @ts-ignore
+  const chunks = await node.cat(cid);
+
+  let totalBytes = 0;
+
+  if (!fs.existsSync(downloadDir)) {
+    fs.mkdirSync(downloadDir);
+  }
+  try {
+    for await (const chunk of chunks) {
+      totalBytes += chunk?.length;
+
+      const currentPercentage = ((totalBytes * 100) / size).toFixed(2);
+
+      fs.appendFileSync(downloadDir, Buffer.from(chunk));
+
+      callback(null, { cid, name, currentPercentage });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}

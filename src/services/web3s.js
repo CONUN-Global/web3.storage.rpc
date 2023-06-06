@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { executeWeb3Storage, getContent, getPeerID, getStorage, lsDir, publishFile, uploadFileNode } from "../web3/index.js";
+import { downloadFile, executeWeb3Storage, getContent, getFilePreview, getPeerID, getStorage, lsDir, publishFile, uploadFileNode } from "../web3/index.js";
 function execWeb3Storage(_options, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -115,6 +115,26 @@ function publishFileRPC(req, callback) {
         }
     });
 }
+function getFilePreviewRPC(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = req.request;
+        try {
+            const res = yield getFilePreview(data.cid, data.options);
+            callback(null, { data: res });
+        }
+        catch (err) {
+            callback(err, null);
+        }
+    });
+}
+function downloadFileRPC(req, callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield downloadFile(req, callback);
+        }
+        catch (err) { }
+    });
+}
 export const Web3StorageServices = {
     executeWeb3Storage: execWeb3Storage,
     getStorage: getStorageRPC,
@@ -124,5 +144,7 @@ export const Web3StorageServices = {
     lsDir: lsDirRPC,
     uploadFile,
     getPeerId,
-    uploadThumbnail
+    uploadThumbnail,
+    getFilePreview: getFilePreviewRPC,
+    downloadFile: downloadFileRPC
 };

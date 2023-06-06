@@ -18,6 +18,8 @@ service Web3StorageService {
     rpc uploadFile (ContentFileRequest) returns (ContentFileResponse) {}
     rpc lsDir (LsDirRequest) returns (ContentFileResponse) {}
     rpc publishFile (PublishFileRequest) returns (ContentFileResponse) {}
+    rpc getFilePreview (LsDirRequest) returns (PreviewResponse) {}
+    rpc downloadFile (DownloadRequest) returns (DownloadResponse) {}
 }
 
 message PeerId {
@@ -46,6 +48,24 @@ message ContentThumbnailRequest {
 
 message ContentFileResponse {
     string data = 1;
+}
+
+message PreviewResponse {
+    bytes data = 1;
+}
+
+message DownloadRequest {
+    string downloadDir = 1;
+    string cid = 2;
+    string name = 3;
+    int32 size = 4;
+    Options options = 5; 
+}
+
+message DownloadResponse {
+    string cid = 1;
+    string name = 2;
+    int32 currentPercentage = 3;
 }
 
 message Empty {}
