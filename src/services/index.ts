@@ -14,7 +14,7 @@ interface Web3StorageProto {
   };
 }
 
-const PROTO_PATH = "./src/protos/";
+const PROTO_PATH = path.join(__dirname, "../protos/");
 
 const options = {
   keepCase: true,
