@@ -3,8 +3,6 @@ import {
   executeWeb3Storage,
   getContent,
   getFilePreview,
-  getLinkedDag,
-  getNode,
   getPeerID,
   getStorage,
   lsDir,

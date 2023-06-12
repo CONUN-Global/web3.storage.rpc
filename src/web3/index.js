@@ -147,15 +147,7 @@ export function downloadFile(call, callback) {
                         totalBytes += chunk === null || chunk === void 0 ? void 0 : chunk.length;
                         const currentPercentage = ((totalBytes * 100) / size).toFixed(2);
                         fs.appendFileSync(downloadDir, Buffer.from(chunk));
-                        console.log(totalBytes);
-                        // data streamer
                         callback(null, { cid, name, currentPercentage });
-                        // call.write({
-                        //   cid,
-                        //   name,
-                        //   currentPercentage
-                        // });
-                        console.log(currentPercentage);
                     }
                     finally {
                         _d = true;
@@ -169,7 +161,6 @@ export function downloadFile(call, callback) {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            // call.end();
         }
         catch (err) {
             console.log(err);
