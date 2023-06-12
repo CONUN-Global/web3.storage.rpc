@@ -13,7 +13,7 @@ import protoLoader from "@grpc/proto-loader";
 import { initiateWeb3Storage } from "../web3/index.js";
 import { Web3StorageServices } from "./web3s.js";
 const server = new grpc.Server();
-const PROTO_PATH = path.join(__dirname, "../protos/");
+const PROTO_PATH = "src/protos/";
 const options = {
     keepCase: true,
     longs: String,
