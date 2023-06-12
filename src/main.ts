@@ -1,1 +1,3 @@
-export { startGRPCServer } from "./services/index.js";
+import { startGRPCServer } from "./services/index.js";
+
+startGRPCServer();
