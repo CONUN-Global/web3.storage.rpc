@@ -139,19 +139,14 @@ export function downloadFile(call, callback) {
         }
         try {
             try {
-                for (var _d = true, chunks_1 = __asyncValues(chunks), chunks_1_1; chunks_1_1 = yield chunks_1.next(), _a = chunks_1_1.done, !_a;) {
+                for (var _d = true, chunks_1 = __asyncValues(chunks), chunks_1_1; chunks_1_1 = yield chunks_1.next(), _a = chunks_1_1.done, !_a; _d = true) {
                     _c = chunks_1_1.value;
                     _d = false;
-                    try {
-                        const chunk = _c;
-                        totalBytes += chunk === null || chunk === void 0 ? void 0 : chunk.length;
-                        const currentPercentage = ((totalBytes * 100) / size).toFixed(2);
-                        fs.appendFileSync(downloadDir, Buffer.from(chunk));
-                        callback(null, { cid, name, currentPercentage });
-                    }
-                    finally {
-                        _d = true;
-                    }
+                    const chunk = _c;
+                    totalBytes += chunk === null || chunk === void 0 ? void 0 : chunk.length;
+                    const currentPercentage = ((totalBytes * 100) / size).toFixed(2);
+                    fs.appendFileSync(downloadDir, Buffer.from(chunk));
+                    callback(null, { cid, name, currentPercentage });
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
