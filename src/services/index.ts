@@ -37,7 +37,7 @@ const web3StorageService = web3StorageProto.Web3StorageService.service;
 
 server.addService(web3StorageService, { ...Web3StorageServices });
 
-export function startGRPCServer() {
+export default function startGRPCServer() {
   server.bindAsync(
     "127.0.0.1:50051",
     grpc.ServerCredentials.createInsecure(),
