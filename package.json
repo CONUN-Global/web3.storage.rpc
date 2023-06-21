@@ -2,17 +2,25 @@
   "name": "web3.storage.rpc",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.js",
-  "bin": "src/bin.js",
+  "bin": {
+    "web3-storage-rpc": "./lib/main.js"
+  },
   "type": "module",
+  "main": "./lib/main.js",
+  "module": "./lib/main.js",
+  "types": "./lib/types/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/main.d.ts",
+      "import": "./lib/main.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && node ./dist/main.js",
-    "package:win": "pkg  . -t node12-win --output myapp",
-    "package:mac": "pkg  . -t node12-macos --output myapp --experimental-modules",
-    "build": "ts-node ./src/main.js",
-    "babel:build": "npx babel src --out-dir dist",
-    "build:webpack": "webpack --mode production"
+    "dev": "nodemon --exec node --loader ts-node/esm ./src/main.ts",
+    "build": "node scripts/build.js && tsc",
+    "bin:win": "pkg  . -t node16-win --output ./app/web3.rpc",
+    "bin:mac": "pkg  . -t node16-macos --output ./app/web3.rpc --experimental-modules",
+    "bin:linux": "pkg . -t node16-linux --output ./app/web3.rpc"
   },
   "keywords": [],
   "author": "",
@@ -30,7 +38,6 @@
     "it-all": "^3.0.2",
     "json-rpc2": "^2.0.0",
     "jsonrpc-lite": "^2.2.0",
-    "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
@@ -46,8 +53,12 @@
     "@types/node": "^20.3.0",
     "protobufjs": "^7.2.3",
     "ts-loader": "^9.4.3",
+    "@types/jest": "^29.4.0",
     "ts-node": "^10.9.1",
-    "webpack": "^5.87.0",
-    "webpack-cli": "^5.1.4"
+    "esbuild": "~0.14.25",
+    "nodemon": "^2.0.20",
+    "ts-jest": "^29.0.5",
+    "tslib": "~2.3.1",
+    "typescript": "^4.6.4"
   }
 }
